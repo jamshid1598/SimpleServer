@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<table>
+		<thead>
+			<th> button 1 </th>
+			<th> button 2 </th>
+			<th> button 3 </th>
+			<th> button 4 </th>
+		</thead>
+			
+		<tbody>
+			<td><button onclick="button_clicked(this)" data-id="1" style="background-color: white">Button</button></td>
+			<td><button onclick="button_clicked(this)" data-id="2" style="background-color: blue">Button</button></td>
+			<td><button onclick="button_clicked(this)" data-id="3" style="background-color: purple">Button</button></td>
+			<td><button onclick="button_clicked(this)" data-id="4" style="background-color: pink">Button</button></td>
+		</tbody>
+	</table>
+
+	<!-- End Search Script -->
+	<script>
+		function button_clicked($this){
+			event.preventDefault();
+			var btnId = $this.dataset.id
+			console.log(btnId)
+
+			var url = "{% url 'Core:button_clicked' %}"
+			fetch(url, {
+				method:'POST',
+				headers:{
+					'Content-Type':'application/json',
+					'Accept': 'application/json',
+					'X-CSRFToken':csrftoken,
+				}, 
+				body:JSON.stringify({'btnId': btnId})
+			})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				console.log(data)
+			});
+		}
+	</script>
+	<!-- End Search Script -->
+
+{% endblock %}
